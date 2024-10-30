@@ -1,0 +1,36 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Language Recommendation{% endblock title %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center text-primary mb-4">Language Recommendation</h1>
+    
+    <!-- Card for Recommended Language -->
+    <div class="card shadow p-4 mb-4">
+        <h3 class="text-success"><i class="bi bi-globe2"></i> Recommended Language: <span class="font-weight-bold">{{ language_name }}</span></h3>
+    </div>
+    
+    <!-- Reasoning Section -->
+    <div class="card shadow p-4 mb-4">
+        <h4 style="color: rgb(9, 12, 161);"><i class="bi bi-lightbulb"></i> Why Learn This Language?</h4>
+        <p class="text-muted">{{ reasoning }}</p>
+    </div>
+    
+    <!-- Learning Tips Section -->
+    <div class="card shadow p-4 mb-4">
+        <h4 class="text-info"><i class="bi bi-book"></i> Tips for Learning {{ language_name }}</h4>
+        <div class="mt-3">
+            <ul class="list-group">
+                {% for tip in learning_tips.splitlines %}
+                    <li class="list-group-item">
+                        <span class="badge badge-primary">Tip</span> {{ tip }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    
+    
+</div>
+{% endblock content %}
