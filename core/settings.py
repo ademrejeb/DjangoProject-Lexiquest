@@ -30,7 +30,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'apps.home' ,
+    'apps.home',  # Enable the inner home (home)
+    'content',
     'apps.authentication',
       # Enable the inner home (home)
 ]
@@ -141,6 +142,13 @@ STATICFILES_DIRS = (
     os.path.join(CORE_DIR, 'apps/static'),
 )
 
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 
 #############################################################
 #############################################################
+
+GEMINI_API_KEY='AIzaSyDHdUHC3HY4iJ4bOSh_FfC_HSgSIGDBIqo'
