@@ -1,7 +1,7 @@
 # evaluation/models.py
 
 from django.db import models
-from django.conf import settings  # Import settings to reference the custom user model
+from django.contrib.auth.models import User
 
 class Question(models.Model):
     texte = models.CharField(max_length=255, verbose_name="Texte de la question")
@@ -16,22 +16,10 @@ class Question(models.Model):
 
 
 class Reponse(models.Model):
-    # Use settings.AUTH_USER_MODEL to reference the custom user model
-    utilisateur = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        null=True,
-        blank=True,
-        verbose_name="Utilisateur"
-    )
-    question = models.ForeignKey(
-        Question,
-        on_delete=models.CASCADE,
-        related_name='reponses',
-        verbose_name="Question"
-    )
+    utilisateur = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)  # Champ utilisateur nullable
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='reponses')  # Champ question obligatoire
     texte = models.CharField(max_length=255, verbose_name="Texte de la réponse")
-    est_correct = models.BooleanField(default=False)
+    est_correct = models.BooleanField(default=False)  # Champ pour indiquer si la réponse est correcte
     date_creation = models.DateTimeField(auto_now_add=True, verbose_name="Date de création")
     date_modification = models.DateTimeField(auto_now=True, verbose_name="Date de modification")
 
@@ -39,6 +27,6 @@ class Reponse(models.Model):
         return f"{self.utilisateur.username if self.utilisateur else 'Anonyme'} - {self.question.texte}"
 
     class Meta:
-        ordering = ['-date_creation']
+        ordering = ['-date_creation']  # Pour trier les réponses par date de création, du plus récent au plus ancien
         verbose_name = "Réponse"
         verbose_name_plural = "Réponses"

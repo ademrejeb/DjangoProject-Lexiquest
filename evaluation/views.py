@@ -112,10 +112,6 @@ class ListeReponsesView(ListView):
 #     })
 
 
-from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseForbidden
-
-@login_required
 def soumettre_reponse(request, question_id):
     question = get_object_or_404(Question, id=question_id)
 
@@ -125,22 +121,26 @@ def soumettre_reponse(request, question_id):
         if form.is_valid():
             reponse_texte = form.cleaned_data['texte']
             
-            # Configure prompt for API request based on the question and response
+            # Ajout du prompt contextuel basé sur la question
             prompt = (
                 f"Given the question: '{question.texte}' and the provided answer: '{reponse_texte}', "
-                f"determine if the answer is correct or incorrect based on the correct answer: "
+                "determine if the answer is correct or incorrect based on the correct answer: "
                 f"'{question.reponse_correcte}'. Respond with 'correct' or 'incorrect' only."
             )
 
-            # Interact with Gemini for evaluation
+            # Envoi de la requête à Gemini pour obtenir une évaluation
             chat_session = model.start_chat(history=[])
             gemini_response = chat_session.send_message(prompt)
             generated_response = gemini_response.text.strip().lower()
 
-            # Determine correctness based on Gemini response
+            # Vérification si la réponse de Gemini est 'correct' ou 'incorrect'
             est_correct = generated_response == "correct"
             
-            # Save the response with the logged-in user
+            # Lignes de débogage
+            print(f"Réponse de Gemini : '{generated_response}'")
+            print(f"Est-ce correct ? : {est_correct}")
+            
+            # Sauvegarde de la réponse dans la base de données
             reponse_obj = Reponse(
                 texte=reponse_texte,
                 question=question,
@@ -149,14 +149,15 @@ def soumettre_reponse(request, question_id):
             )
             reponse_obj.save()
 
-            # Provide feedback to the user
+            # Messages pour l'utilisateur
             if est_correct:
-                messages.success(request, "Correct! Votre réponse est correcte.")
+                messages.success(request, "Correct ! Votre réponse est correcte.")
             else:
-                messages.error(request, f"Incorrect! La réponse correcte est: {question.reponse_correcte}")
+                messages.error(request, f"Incorrect ! La réponse correcte est : {question.reponse_correcte}")
 
-            messages.info(request, f"Réponse de Gemini: {generated_response}")
-            return redirect('liste_reponses')
+            # Affichage de la réponse de Gemini
+            messages.info(request, f"Réponse de Gemini : {generated_response}")
+
     else:
         form = ReponseForm()
 
@@ -164,7 +165,6 @@ def soumettre_reponse(request, question_id):
         'question': question,
         'form': form
     })
-
 
 # Vue pour modifier une réponse
 class ModifierReponseView(UpdateView):

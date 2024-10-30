@@ -1,23 +1,33 @@
-{% extends 'layouts/base.html' %}
+<!-- evaluation/templates/evaluation/accueil.html -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Bienvenue sur l'application d'évaluation</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container text-center mt-5">
+        <h1>Bienvenue sur l'application d'évaluation</h1>
+        <p class="lead">Cliquez sur "Liste des réponses" pour voir toutes les réponses disponibles.</p>
+        <a href="{% url 'liste_reponses' %}" class="btn btn-primary btn-lg">Liste des réponses</a>
 
-{% block title %}Bienvenue sur l'application d'évaluation{% endblock %}
+        <h2 class="mt-5">Questions disponibles :</h2>
+        <ul class="list-group">
+            {% for question in questions %}
+                <li class="list-group-item">
+                    {{ question.texte }}
+                    <a href="{% url 'soumettre_reponse' question_id=question.id %}" class="btn btn-success btn-lg">Déposer une réponse</a>
+                </li>
+            {% empty %}
+                <li class="list-group-item">Aucune question disponible.</li>
+            {% endfor %}
+        </ul>
+    </div>
 
-{% block content %}
-<div class="container text-center mt-5">
-    <h1>Bienvenue sur l'application d'évaluation</h1>
-    <p class="lead">Cliquez sur "Liste des réponses" pour voir toutes les réponses disponibles.</p>
-    <a href="{% url 'liste_reponses' %}" class="btn btn-primary btn-lg">Liste des réponses</a>
-
-    <h2 class="mt-5">Questions disponibles :</h2>
-    <ul class="list-group">
-        {% for question in questions %}
-            <li class="list-group-item">
-                {{ question.texte }}
-                <a href="{% url 'soumettre_reponse' question_id=question.id %}" class="btn btn-success btn-lg">Déposer une réponse</a>
-            </li>
-        {% empty %}
-            <li class="list-group-item">Aucune question disponible.</li>
-        {% endfor %}
-    </ul>
-</div>
-{% endblock %}
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
