@@ -29,7 +29,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'apps.home'  # Enable the inner home (home)
+    'apps.home',  # Enable the inner home (home)
+    'content',
 ]
 
 MIDDLEWARE = [
@@ -121,5 +122,11 @@ STATICFILES_DIRS = (
 )
 
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
 #############################################################
 #############################################################
+
+GEMINI_API_KEY='AIzaSyDHdUHC3HY4iJ4bOSh_FfC_HSgSIGDBIqo'

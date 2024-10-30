@@ -1,0 +1,78 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Edit Course{% endblock %}
+
+{% block content %}
+<div class="header bg-primary pb-6">
+    <div class="container-fluid">
+        <div class="header-body">
+            <div class="row align-items-center py-4">
+                <div class="col-lg-6 col-7">
+                    <h6 class="h2 text-white d-inline-block mb-0">Edit Course</h6>
+                </div>
+                <div class="col-lg-6 col-5 text-right">
+                    <a href="{% url 'course_detail' course.id %}" class="btn btn-sm btn-neutral">Back to Course Details</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Page content -->
+<div class="container-fluid mt--6">
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <div class="card-header border-0">
+                    <h3 class="mb-0">Course Information</h3>
+                </div>
+                <div class="card-body">
+                    <form method="post" class="needs-validation" novalidate>
+                        {% csrf_token %}
+                        
+                        <!-- Titre du cours -->
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Title:</label>
+                            <input type="text" name="title" value="{{ course.title }}" class="form-control" id="title" required>
+                            <div class="invalid-feedback">Please provide a title for the course.</div>
+                        </div>
+
+                        <!-- Description du cours -->
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description:</label>
+                            <textarea name="description" class="form-control" id="description" rows="5" required>{{ course.description }}</textarea>
+                            <div class="invalid-feedback">Please provide a description for the course.</div>
+                        </div>
+
+                        <!-- Bouton pour soumettre le formulaire -->
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-success btn-block">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Script Bootstrap pour valider le formulaire -->
+<script>
+    // Validation Bootstrap
+    (function () {
+        'use strict'
+        var forms = document.querySelectorAll('.needs-validation')
+
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+
+                    form.classList.add('was-validated')
+                }, false)
+            })
+    })()
+</script>
+{% endblock %}

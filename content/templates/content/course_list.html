@@ -1,0 +1,113 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Courses{% endblock %}
+
+{% block content %}
+<div class="header bg-primary pb-6">
+  <div class="container-fluid">
+    <div class="header-body">
+      <div class="row align-items-center py-4">
+        <div class="col-lg-6 col-7">
+          <h6 class="h2 text-white d-inline-block mb-0">Courses</h6>
+          <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
+            <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+              <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
+              <li class="breadcrumb-item"><a href="#">Courses</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Available Courses</li>
+            </ol>
+          </nav>
+        </div>
+        <div class="col-lg-6 col-5 text-right">
+          <a href="{% url 'add_course' %}" class="btn btn-sm btn-neutral"><i class="ni ni-fat-add"></i> Add New Course</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Page content -->
+<div class="container-fluid mt--6">
+  <div class="row">
+    <div class="col">
+      <div class="card">
+        <!-- Card header -->
+        <div class="card-header border-0">
+          <h3 class="mb-0">Available Courses</h3>
+        </div>
+
+        
+        <div class="col-lg-3 col-5 text-right">
+            <form method="GET" action="{% url 'course_list' %}">
+                <select name="language" onchange="this.form.submit();" class="form-control">
+                    <option value="">-- Select Language --</option>
+                    {% for lang in languages %}
+                        <option value="{{ lang }}" {% if lang == selected_language %}selected{% endif %}>
+                            {{ lang }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </form>
+        </div>
+
+        
+        <!-- Courses table -->
+        <div class="table-responsive">
+          <table class="table align-items-center table-flush">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col">Course</th>
+                <th scope="col">Language</th>
+                <th scope="col" class="text-right">Created Date</th>
+              </tr>
+            </thead>
+            <tbody class="list">
+              {% for course in courses %}
+                <tr>
+                  <td>
+                    <a href="{% url 'course_detail' course.id %}" class="text-decoration-none">
+                        
+                      <div class="media align-items-center">
+                        <a href="{% url 'course_detail' course.id %}" class="avatar rounded-circle mr-3">
+                            {% if course.image %}
+                            <img alt="Course Image" src="{{ course.image.url }}">
+                          {% else %}
+                            <img alt="Default Image" src="/static/assets/img/theme/bootstrap.jpg"> <!-- Image par défaut -->
+                          {% endif %}                        
+                        </a>
+                        <div class="media-body">
+                          <span class="name mb-0 text-sm">{{ course.title }}</span>
+                        </div>
+                      </div>
+                    </a>
+                  </td>
+
+                  <td>
+                    <a href="{% url 'course_detail' course.id %}" class="text-decoration-none">
+                      <div class="media align-items-center">
+                        <div class="media-body">
+                          <span class="name mb-0 text-sm">{{ course.language }}</span>
+                        </div>
+                      </div>
+                    </a>
+                  </td>
+
+
+                  <td class="text-right">
+                    <span class="badge bg-primary rounded-pill">{{ course.created_at|date:"F j, Y" }}</span>
+                  </td>
+                </tr>
+              {% empty %}
+                <tr>
+                  <td colspan="2" class="text-center">No courses available</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% include "includes/footer.html" %}
+</div>
+{% endblock %}
