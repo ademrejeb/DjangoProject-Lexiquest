@@ -18,15 +18,21 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link {% if 'icons' in segment %} active {% endif %}" href="/icons.html">
+            <a class="nav-link {% if 'Language' in segment %} active {% endif %}" href="/language-recommendation/">
               <i class="ni ni-planet text-orange"></i>
-              <span class="nav-link-text">Icons</span>
+              <span class="nav-link-text">Language Recommendation</span>
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link {% if 'Quizzes' in segment %} active {% endif %}" href="/Quizzes.html">
               <i class="ni ni-planet text-orange"></i>
               <span class="nav-link-text">Quizzes</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if 'Courses' in segment %} active {% endif %}" href="/courses/">
+              <i class="ni ni-planet text-orange"></i>
+              <span class="nav-link-text">courses</span>
             </a>
           </li>
           <li class="nav-item">
@@ -41,68 +47,43 @@
               <span class="nav-link-text">Profile</span>
             </a>
           </li>
+          {% if user.is_superuser %}
           <li class="nav-item">
-            <a class="nav-link {% if 'tables' in segment %} active {% endif %}" href="/tables.html">
+            <a class="nav-link {% if 'tables' in segment %} active {% endif %}" href="/users/">
               <i class="ni ni-bullet-list-67 text-default"></i>
-              <span class="nav-link-text">Tables</span>
+              <span class="nav-link-text">Users List</span>
             </a>
           </li>
+          {% endif %}
           <li class="nav-item">
-            <a class="nav-link" href="/login.html">
+            <a class="nav-link" href="/login/">
               <i class="ni ni-key-25 text-info"></i>
               <span class="nav-link-text">Login (template)</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/register.html">
+            <a class="nav-link" href="/register/">
               <i class="ni ni-circle-08 text-pink"></i>
               <span class="nav-link-text">Register (template)</span>
             </a>
           </li>
 
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'logout' %}">
-              <i class="ni ni-user-run text-red"></i>
-              <span class="nav-link-text">Logout</span>
-            </a>
-          </li>            
+    <form action="{% url 'logout' %}" method="POST" style="display: inline;">
+        {% csrf_token %}
+        <button type="submit" class="nav-link" style="  margin-left: 15px;border: none; background: none; padding: 0;">
+            <i class="ni ni-user-run text-red"></i>
+            <span class="nav-link-text">Logout</span>
+        </button>
+    </form>
+</li>          
         </ul>
         <!-- Divider -->
         <hr class="my-3">
         <!-- Heading -->
-        <h6 class="navbar-heading p-0 text-muted">
-          <span class="docs-normal">Resources</span>
-        </h6>
+        
         <!-- Navigation -->
-        <ul class="navbar-nav mb-md-3">
-
-          <li class="nav-item">
-            <a class="nav-link" 
-               target="_blank" 
-               href="https://appseed.us/admin-dashboards/django-dashboard-argon">
-              <i class="ni ni-archive-2"></i>
-              <span class="nav-link-text">Product Page</span>
-            </a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link" 
-               target="_blank" 
-               href="https://appseed.us/admin-dashboards/django-dashboard-argon-pro">
-              <i class="ni ni-spaceship text-red"></i>
-              <span class="nav-link-text text-red">PRO Version</span>
-            </a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link active active-pro" 
-               target="_blank" 
-               href="http://appseed.us">
-              <i class="ni ni-send text-dark"></i>
-              <span class="nav-link-text">AppSeed</span>
-            </a>
-          </li>
-        </ul>
+        
       </div>
     </div>
   </div>

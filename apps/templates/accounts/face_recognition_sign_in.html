@@ -1,0 +1,119 @@
+{% extends 'layouts/base-fullscreen.html' %}
+
+{% block title %} Face Recognition Sign In {% endblock title %}
+
+{% block stylesheets %}
+<style>
+    #video {
+        width: 100%;
+        max-width: 600px;
+        border: 1px solid #ccc;
+    }
+    .hidden {
+        display: none;
+    }
+</style>
+{% endblock stylesheets %}
+
+{% block content %}
+<div class="container mt--8 pb-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-5 col-md-7">
+            <div class="card bg-secondary shadow border-0">
+                <div class="card-header bg-transparent pb-5">
+                    <div class="text-muted text-center mt-2 mb-3">
+                        Face Recognition Sign In
+                    </div>
+                </div>
+                <div class="card-body px-lg-5 py-lg-5 text-center">
+                    <video id="video" autoplay></video>
+                    <div class="text-center mt-3">
+                        <button id="startRecognition" class="btn btn-primary" type="button">
+                            Start Face Recognition
+                        </button>
+                    </div>
+                    <div id="result" class="hidden">
+                        <h3 id="message"></h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+// Access the video element and buttons
+const video = document.getElementById('video');
+const startRecognitionButton = document.getElementById('startRecognition');
+const resultDiv = document.getElementById('result');
+const messageElement = document.getElementById('message');
+
+// Start video stream
+navigator.mediaDevices.getUserMedia({ video: true })
+    .then(stream => {
+        video.srcObject = stream;
+    })
+    .catch(err => {
+        console.error("Error accessing camera: ", err);
+        alert("Could not access your camera. Please allow camera access.");
+    });
+
+// Start face recognition on button click
+startRecognitionButton.addEventListener('click', async () => {
+    event.preventDefault();
+    const canvas = document.createElement('canvas');
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    const context = canvas.getContext('2d');
+
+    // Draw the current video frame to the canvas
+    context.drawImage(video, 0, 0);
+
+    // Convert the canvas to a Blob
+    canvas.toBlob(async (blob) => {
+        const formData = new FormData();
+        formData.append('image', blob, 'frame.jpg');
+
+        // Send the image to the backend for face recognition
+        const response = await fetch('/face_recognition_sign_in/', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken') // Add CSRF token for Django
+            }
+            
+        }
+    );
+
+        const result = await response.json();
+        resultDiv.classList.remove('hidden');
+        messageElement.textContent = result.message;
+
+        if (result.success) {
+            // Redirect on successful recognition
+            setTimeout(() => {
+                window.location.href = '/';  // Change to your desired redirect URL
+            }, 2000);
+        }
+    }, 'image/jpeg');
+});
+
+// Function to get CSRF token
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+</script>
+{% endblock javascripts %}
