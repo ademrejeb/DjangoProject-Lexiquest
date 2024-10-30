@@ -18,12 +18,6 @@
             </ol>
           </nav>
         </div>
-        <div class="col-lg-6 col-5 text-right">
-          <a href="{% url 'edit_course' course.id %}" class="btn btn-sm btn-neutral">Edit Course</a>
-          <!-- <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteCourseModal">Delete Course</button> -->
-          <button class="btn btn-sm btn-danger" onclick="openModal()">Delete Course</button>
-
-        </div>
       </div>
     </div>
   </div>
@@ -39,63 +33,50 @@
         </div>
         <div class="card-body">
           <p class="lead">{{ course.description }}</p>
-          <button class="btn btn-sm btn-primary" onclick="openSummaryModal()">Show the Summary</button>
 
           <!-- Fichier attaché -->
           {% if course.file %}
             <div class="mt-4">
-              <strong>Attached File:</strong>
+              <strong>course content:</strong>
               <a href="{{ course.file.url }}" download class="btn btn-info btn-sm ms-2">{{ course.file.name }}</a>
+              <a href="{% url 'download_file' course.id %}" class="btn btn-sm btn-default">Start<i class="ni ni-send ml-2"></i></a>
+
             </div>
           {% else %}
             <p class="mt-4 text-muted">No file attached.</p>
           {% endif %}
+          <div class="mt-4">
+            <button class="btn btn-sm btn-primary" onclick="openSummaryModal()"> Generate a Summary for the course<i class="ni ni-ungroup ml-2"></i></button>
 
+          </div>
           <!-- Questions générées -->
           {% if questions %}
-            <h4 class="mt-5">Generated Questions</h4>
-            <div class="row">
+          <h4 class="mt-5">Questions</h4>
+          <div class="mt-4">
               {% for question in questions %}
-                <div class="col-md-6">
                   <div class="card shadow-sm mb-4" style="background-color: #f2f6f8;">
-                    <div class="card-body">
-                      <h5 class="card-title text-primary"><i class="fas fa-question-circle me-2"></i>Question</h5>
-                      <p class="card-text">{{ question.text }}</p>
-                      <hr>
-                      <h5 class="card-title text-success"><i class="fas fa-check-circle me-2"></i>Answer</h5>
-                      <p class="card-text">{{ question.answer }}</p>
-                    </div>
+                      <div class="card-body">
+                          <h5 class="card-title text-primary"><i class="fas fa-question-circle me-2"></i>Question</h5>
+                          <p class="card-text">{{ question.text }}</p>
+
+                          <hr>
+                          <h5 class="card-title text-success"><i class="fas fa-check-circle me-2"></i>Add your Answer here</h5>
+                          <textarea class="form-control" rows="3"></textarea>
+                          <a href="submit" class="btn btn-sm btn-default float-right mt-3 mr-4"><i class="ni ni-send"></i></a>
+
+                      </div>
                   </div>
-                </div>
               {% empty %}
-                <p class="text-muted">No questions generated for this course.</p>
+                  <p class="text-muted">No questions generated for this course.</p>
               {% endfor %}
-            </div>
+          </div>
           {% endif %}
+
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Custom modal for deletion confirmation -->
-<div id="deleteCourseModal" class="custom-modal">
-    <div class="custom-modal-content">
-      <div class="custom-modal-header">
-        <h5>Confirm Deletion</h5>
-        <span class="close-button" onclick="closeModal()">&times;</span>
-      </div>
-      <div class="custom-modal-body">
-        <p>Are you sure you want to delete "{{ course.title }}"?</p>
-      </div>
-      <div class="custom-modal-footer">
-        <form method="post" action="{% url 'delete_course' course.id %}">
-          {% csrf_token %}
-          <button type="submit" class="btn btn-danger">Yes, delete</button>
-          <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
-        </form>
-      </div>
-    </div>
-  </div>
 
 
   <!-- Modal pour afficher le résumé -->
@@ -108,6 +89,11 @@
       <div class="custom-modal-body">
         <p>{{ course.summary }}</p>  <!-- Contenu du résumé -->
       </div>
+      <div class="custom-modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="closeSummaryModal()">Close</button>
+        <a href="{% url 'download_summary' course.id %}" class="btn btn-primary">Save Summary as PDF</a>
+    </div>
+
       <div class="custom-modal-footer">
         <button type="button" class="btn btn-secondary" onclick="closeSummaryModal()">Close</button>
       </div>

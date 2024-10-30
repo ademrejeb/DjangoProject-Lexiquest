@@ -3,6 +3,9 @@ from .models import Course, Question
 import logging
 from django.http import HttpResponse, FileResponse, Http404
 import mimetypes
+from django.template.loader import render_to_string
+from xhtml2pdf import pisa
+from io import BytesIO
 
 logger = logging.getLogger(__name__)
 
@@ -120,3 +123,39 @@ def download_file(request, course_id):
 
 def home(request):
     return render(request, 'content/home.html') 
+
+
+def course_listFront(request):
+    language_filter = request.GET.get('language')  # Récupérer le filtre de langue depuis la requête
+    courses = Course.objects.all()
+
+    # Appliquer le filtre si une langue est sélectionnée
+    if language_filter:
+        courses = courses.filter(language=language_filter)
+
+    # Récupérer toutes les langues distinctes pour le filtre
+    languages = Course.objects.values_list('language', flat=True).distinct()
+
+    return render(request, 'content/frontoffice/courses_front.html', {
+        'courses': courses
+    })
+
+def course_detailFront(request, course_id):
+    course = get_object_or_404(Course, id=course_id)
+    questions = course.questions.all()  # Récupère les questions associées
+
+    return render(request, 'content/frontoffice/course_detail_front.html', {'course': course, 'questions': questions})
+
+def download_summary(request, course_id):
+    course = get_object_or_404(Course, id=course_id)
+    html = render_to_string('content/frontoffice/my_template.html', {'course': course})  # Pass only the course data
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="summary.pdf"'
+    
+    result = BytesIO()
+    pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), result)
+    if not pdf.err:
+        response.write(result.getvalue())
+        return response
+    else:
+        return HttpResponse('Error generating PDF', status=500)
