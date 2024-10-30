@@ -13,7 +13,10 @@ urlpatterns = [
     # The home page
     path('', views.index, name='home'),
     path('content/', include('content.urls')),
-
+    path('evaluation/', include('evaluation.urls')),
+    path('chatbot/', include('chatbot.urls')),
+    path('chat/', include('chat.urls')),
+    path('transaltor/', include('translator.urls')),
     # Matches any html file
     re_path(r'^.*\.*', views.pages, name='pages'),
 

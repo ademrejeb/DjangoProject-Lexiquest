@@ -12,13 +12,10 @@
           <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
             <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
               <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
-              <li class="breadcrumb-item"><a href="#">Courses</a></li>
+             
               <li class="breadcrumb-item active" aria-current="page">Available Courses</li>
             </ol>
           </nav>
-        </div>
-        <div class="col-lg-6 col-5 text-right">
-          <a href="{% url 'add_course' %}" class="btn btn-sm btn-neutral">Add New Course</a>
         </div>
       </div>
     </div>
@@ -28,47 +25,27 @@
 <!-- Page content -->
 <div class="container-fluid mt--6">
   <div class="row">
-    <div class="col">
-      <div class="card">
-        <!-- Card header -->
-        <div class="card-header border-0">
-          <h3 class="mb-0">Available Courses</h3>
-        </div>
-        <!-- Courses table -->
-        <div class="table-responsive">
-          <table class="table align-items-center table-flush">
-            <thead class="thead-light">
-              <tr>
-                <th scope="col">Course</th>
-                <th scope="col" class="text-right">Created Date</th>
-              </tr>
-            </thead>
-            <tbody class="list">
-              {% for course in courses %}
-                <tr>
-                  <td>
-                    <a href="{% url 'course_detail' course.id %}" class="text-decoration-none">
-                      <div class="media align-items-center">
-                        <div class="media-body">
-                          <span class="name mb-0 text-sm">{{ course.title }}</span>
-                        </div>
-                      </div>
-                    </a>
-                  </td>
-                  <td class="text-right">
-                    <span class="badge bg-primary rounded-pill">{{ course.created_at|date:"F j, Y" }}</span>
-                  </td>
-                </tr>
-              {% empty %}
-                <tr>
-                  <td colspan="2" class="text-center">No courses available</td>
-                </tr>
-              {% endfor %}
-            </tbody>
-          </table>
+    {% for course in courses %}
+      <div class="col-lg-4 col-md-6">
+        <div class="card mb-4">
+          <div class="card-header">
+            <h5 class="mb-0">{{ course.title }}</h5>
+          </div>
+          <div class="card-body">
+            <p class="card-text">{{ course.description }}</p>
+            <h6 class="card-subtitle mb-2 text-muted">{{ course.language }}</h6>
+            <p class="card-text">
+              <span class="badge bg-primary rounded-pill">{{ course.created_at|date:"F j, Y" }}</span>
+            </p>
+            <a href="{% url 'course_detailFront' course.id %}" class="btn btn-primary">View Course</a>
+          </div>
         </div>
       </div>
-    </div>
+    {% empty %}
+      <div class="col">
+        <div class="alert alert-warning text-center">No courses available</div>
+      </div>
+    {% endfor %}
   </div>
 
   {% include "includes/footer.html" %}

@@ -166,7 +166,7 @@ class Course(models.Model):
             if questions:
                 for question_text in questions:
                     # Créer chaque question dans la base de données
-                    question = Question.objects.create(course=self, text=question_text)
+                    question = QuestionWithAnswer.objects.create(course=self, text=question_text)
                     
                     # Générer une réponse pour la question et la stocker
                     answer = self.generate_answer_for_question(question_text)
@@ -178,7 +178,7 @@ class Course(models.Model):
         return None
 
 
-class Question(models.Model):
+class QuestionWithAnswer(models.Model):
     course = models.ForeignKey(Course, related_name="questions", on_delete=models.CASCADE)
     text = models.TextField()
     answer = models.TextField(null=True, blank=True)  # Nouveau champ pour stocker les réponses

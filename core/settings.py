@@ -33,6 +33,10 @@ INSTALLED_APPS = [
     'apps.home',  # Enable the inner home (home)
     'content',
     'apps.authentication',
+    'evaluation',
+    'chatbot',
+    'chat',
+    'translator'
       # Enable the inner home (home)
 ]
 
@@ -50,6 +54,14 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
 ROOT_URLCONF = 'core.urls'
@@ -61,7 +73,14 @@ AUTHENTICATION_BACKENDS = [
    
     'django.contrib.auth.backends.ModelBackend',  # Default backend
 ]
-
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
+MESSAGE_TAGS = {
+    messages.DEBUG: 'debug',
+    messages.INFO: 'info',
+    messages.SUCCESS: 'success',
+    messages.WARNING: 'warning',
+    messages.ERROR: 'danger',
+}
 
 AUTH_USER_MODEL = 'authentication.CustomUser'
 
