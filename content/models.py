@@ -182,7 +182,7 @@ class QuestionWithAnswer(models.Model):
     course = models.ForeignKey(Course, related_name="questions", on_delete=models.CASCADE)
     text = models.TextField()
     answer = models.TextField(null=True, blank=True)  # Nouveau champ pour stocker les réponses
-
+    reponse_correcte = models.CharField(max_length=255, verbose_name="Réponse correcte", null=True, blank=True)
 
     def __str__(self):
         return self.text

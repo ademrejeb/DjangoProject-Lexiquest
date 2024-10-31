@@ -17,43 +17,6 @@
               <span class="nav-link-text">Dashboard</span>
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link {% if 'Language' in segment %} active {% endif %}" href="/language-recommendation/">
-              <i class="ni ni-planet text-orange"></i>
-              <span class="nav-link-text">Language Recommendation</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/content/courses/">
-              <i class="ni ni-book-bookmark"></i>              
-              <span class="nav-link-text">Courses</span>
-            </a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link {% if 'Quizzes' in segment %} active {% endif %}" href="/Quizzes.html">
-              <i class="ni ni-planet text-orange"></i>
-              <span class="nav-link-text">Quizzes</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link {% if 'Courses' in segment %} active {% endif %}" href="/courses/">
-              <i class="ni ni-planet text-orange"></i>
-              <span class="nav-link-text">Skills Analysis</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link {% if 'map' in segment %} active {% endif %}" href="/map.html">
-              <i class="ni ni-pin-3 text-primary"></i>
-              <span class="nav-link-text">Google</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link {% if 'profile' in segment %} active {% endif %}" href="/profile.html">
-              <i class="ni ni-single-02 text-yellow"></i>
-              <span class="nav-link-text">Profile</span>
-            </a>
-          </li>
           {% if user.is_superuser %}
           <li class="nav-item">
             <a class="nav-link {% if 'tables' in segment %} active {% endif %}" href="/users/">
@@ -62,18 +25,76 @@
             </a>
           </li>
           {% endif %}
+          
+          {% if not user.is_superuser %}
+          
           <li class="nav-item">
-            <a class="nav-link" href="/login/">
-              <i class="ni ni-key-25 text-info"></i>
-              <span class="nav-link-text">Login (template)</span>
+            <a class="nav-link {% if 'profile' in segment %} active {% endif %}" href="/profile.html">
+              <i class="ni ni-single-02 text-blue"></i>
+              <span class="nav-link-text">Profile</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/register/">
-              <i class="ni ni-circle-08 text-pink"></i>
-              <span class="nav-link-text">Register (template)</span>
+            <a class="nav-link" href="/content/coursesFront/">
+              <i class="ni ni-book-bookmark"></i>              
+              <span class="nav-link-text">Courses</span>
             </a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link {% if 'Courses' in segment %} active {% endif %}" href="/courses/">
+              <i class="ni ni-badge"></i>
+              <span class="nav-link-text">Skills Analysis</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/transaltor/">
+              <i class="ni ni-world"></i>             
+              <span class="nav-link-text">Translate Helper</span>
+            </a>
+          </li>
+          {% endif %}
+          <li class="nav-item">
+            <a class="nav-link {% if 'Language' in segment %} active {% endif %}" href="/language-recommendation/">
+              <i class="ni ni-planet text-orange"></i>
+              <span class="nav-link-text">Language Recommendation</span>
+            </a>
+          </li>
+         
+          {% if user.is_superuser %}
+          <li class="nav-item">
+            <a class="nav-link" href="/content/courses/">
+              <i class="ni ni-book-bookmark"></i>              
+              <span class="nav-link-text">Courses</span>
+            </a>
+          </li>
+          {% endif %}
+          
+
+          <li class="nav-item">
+            <a class="nav-link" href="/chatbot/">
+              <i class="ni ni-spaceship"></i>            
+              <span class="nav-link-text">Chatbot</span>
+            </a>
+          </li>
+          
+          <li class="nav-item">
+            <a class="nav-link {% if 'Quizzes' in segment %} active {% endif %}" href="/evaluation/acceuil/">
+              <i class="ni ni-planet text-orange"></i>
+              <span class="nav-link-text">Response Checker</span>
+            </a>
+          </li>
+          
+          <li class="nav-item">
+            <a class="nav-link {% if 'map' in segment %} active {% endif %}" href="/chat/">
+              <i class="ni ni-notification-70"></i>
+              <span class="nav-link-text">Chat Room</span>
+            </a>
+          </li>
+          
+          
+          
+          
+          
 
           <li class="nav-item">
     <form action="{% url 'logout' %}" method="POST" style="display: inline;">

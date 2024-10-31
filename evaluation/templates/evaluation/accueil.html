@@ -12,7 +12,7 @@
     <ul class="list-group">
         {% for question in questions %}
             <li class="list-group-item">
-                {{ question.texte }}
+                {{ question.text }}
                 <a href="{% url 'soumettre_reponse' question_id=question.id %}" class="btn btn-success btn-lg">Déposer une réponse</a>
             </li>
         {% empty %}

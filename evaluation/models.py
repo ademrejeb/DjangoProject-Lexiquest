@@ -2,7 +2,7 @@
 
 from django.db import models
 from django.conf import settings  # Import settings to reference the custom user model
-
+from content.models import QuestionWithAnswer
 class Question(models.Model):
     texte = models.CharField(max_length=255, verbose_name="Texte de la question")
     reponse_correcte = models.CharField(max_length=255, verbose_name="Réponse correcte")
@@ -25,7 +25,7 @@ class Reponse(models.Model):
         verbose_name="Utilisateur"
     )
     question = models.ForeignKey(
-        Question,
+        QuestionWithAnswer,
         on_delete=models.CASCADE,
         related_name='reponses',
         verbose_name="Question"
@@ -36,7 +36,7 @@ class Reponse(models.Model):
     date_modification = models.DateTimeField(auto_now=True, verbose_name="Date de modification")
 
     def __str__(self):
-        return f"{self.utilisateur.username if self.utilisateur else 'Anonyme'} - {self.question.texte}"
+        return f"{self.utilisateur.username if self.utilisateur else 'Anonyme'} - {self.question.text}"
 
     class Meta:
         ordering = ['-date_creation']

@@ -24,7 +24,7 @@
 </div>
 
 <div class="container">
-    <form id="post-form" method="POST" action="chat/checkview">
+    <form id="post-form" method="POST" action="checkview">
         {% csrf_token %}
         <label for="room">Sélectionnez un salon :</label>
         <select name="room_name" id="room" required>

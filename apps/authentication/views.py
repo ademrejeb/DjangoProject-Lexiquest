@@ -191,7 +191,7 @@ def face_recognition_view(request):
                             distance = euclidean(uploaded_encoding, known_encoding)
                             print(f"Euclidean distance for {user.email}: {distance}")  # Debugging line
 
-                            tolerance_distance = 0.5
+                            tolerance_distance = 0.53
                             if distance <= tolerance_distance:
                                 login(request, user)
                                 return JsonResponse({'success': True, 'message': 'Face recognized and logged in!'})
