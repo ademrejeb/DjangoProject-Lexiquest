@@ -3,6 +3,12 @@ from chat.models import Room, Message
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
+def home2(request):
+    # Récupérer tous les salons existants
+    rooms = Room.objects.all()
+    return render(request, 'chat/home.html', {'rooms': rooms})
+
+
 def home(request):
     # Récupérer tous les salons existants
     rooms = Room.objects.all()
